@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Scrapper
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static "master.css" %}">
+{% endblock %}
+
+{% block content %}
+
+    <nav class="navbar">
+        <ul>
+            <li> <a href="#categories">Categories</a>
+
+                <!-- <ul>
+                    <li>
+                        <a href="#">make Up</a>
+                    </li>
+                    <li>
+                        <a href="#">Hair</a>
+                    </li>
+                    <li>
+                        <a href="#">Skin</a>
+                    </li>
+                    <li>
+                        <a href="#">Personal Care</a>
+                    </li>
+                </ul> -->
+
+            <li><a href="#">Brands</a> </li>
+            <!-- <li> <a href="#">Our Clients</a> </li>
+            <li> <a href="#">Contact</a> </li> -->
+        </ul>
+    </nav>
+    <section id="categories">
+
+        <h1 class="H-primary">WebScraping for Beauty Products</h1>
+        <p> The act or process of extracting data from a website.
+        </p>
+        <div class="box">
+            <select>
+                <option>Option 1</option>
+                <option>Option 2 </option>
+                <option>Option 3</option>
+                <option>Option 4</option>
+                <option>Option 5</option>
+            </select>
+        </div>
+
+        <button class="btn">Export</button>
+
+    </section>
+    <!-- <marquee behavior="scroll" direction="left" scrollamount="12">
+        <p> universal </p>
+    </marquee> -->
+{% endblock %}

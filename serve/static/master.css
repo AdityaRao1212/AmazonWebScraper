@@ -1,0 +1,84 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
+.navbar {
+    height: 45px;
+    background-color: rgb(201, 85, 85);
+}
+
+.navbar ul {
+    overflow: auto;
+
+}
+
+/*          
+.navbar > ul > ul> li {
+
+    color: black;
+    position: relative;
+    cursor: pointer;
+    font-size: 15px;
+    letter-spacing: 2px;
+    float: left;
+    width: 57px;
+    height: 25px;
+    line-height: 30px;
+
+}  */
+
+.navbar li {
+    padding: 14px;
+    float: left;
+    list-style: none;
+}
+
+.navbar li a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+#categories {
+    font-size: 34px;
+    background: url(images/img22.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    padding: 3px 80px;
+    height: 520px;
+    justify-content: center;
+    align-items: center;
+}
+
+#categories p {
+    font-size: 30px;
+}
+
+.btn {
+    border-radius: 10px;
+    font-size: 20px;
+    width: 100px;
+    padding: 9px;
+    margin: 100px;
+    background: black;
+    color: white;
+}
+
+.box {
+    position: absolute;
+
+}
+
+.box select {
+    background: brown;
+    color: burlywood;
+    padding: 5px;
+    height: 40px;
+    font-size: 20px;
+    width: 140px;
+}
+
