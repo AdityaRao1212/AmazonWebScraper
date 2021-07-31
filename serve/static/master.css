@@ -4,8 +4,9 @@
 }
 
 .navbar {
-    height: 45px;
+    height: 65px;
     background-color: rgb(201, 85, 85);
+    margin-bottom: 0;;
 }
 
 .navbar ul {
@@ -41,23 +42,31 @@
     font-size: 18px;
 }
 
+h1{
+    text-decoration: none;
+    font-weight: bold;
+    color: Black;
+}
+
+
 #categories {
     font-size: 34px;
+    color: black;
     background: url(images/img22.jpg);
     background-repeat: no-repeat;
     background-size: cover;
     display: flex;
     flex-direction: column;
-    padding: 3px 80px;
     height: 520px;
     justify-content: center;
     align-items: center;
+    text-align: center;
 }
 
-#categories p {
-    font-size: 30px;
+#categories label {
+    font-size: 2rem;
 }
-
+/* 
 .btn {
     border-radius: 10px;
     font-size: 20px;
@@ -71,7 +80,7 @@
 .box {
     position: absolute;
 
-}
+} */
 
 .box select {
     background: brown;
@@ -81,4 +90,5 @@
     font-size: 20px;
     width: 140px;
 }
+
 

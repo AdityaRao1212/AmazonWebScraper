@@ -3,6 +3,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 # Create your models here.
 class Scraped(models.Model):
+    user_name = models.CharField(null=True, max_length=255)
     brands = models.CharField(max_length=255)
     categories = models.CharField(max_length=255)
     names = models.CharField(max_length=1000)

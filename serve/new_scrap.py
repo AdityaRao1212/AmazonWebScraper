@@ -1,5 +1,4 @@
 from bs4 import BeautifulSoup
-import numpy as np
 import pandas as pd
 import requests
 
@@ -15,34 +14,34 @@ context = {
 class Scrapper:
     """A class to scrap amazon data"""
 
-    def __init__(self):
+    def __init__(self, user_name, category, pages):
         self.df = pd.DataFrame(
             columns=[
-                'names',
+                'user_name',
+                'brands',
                 'categories',
-                'selling_price',
-                'cost_price',
+                'names',
                 'rating',
                 'total_rating',
+                'cost_price',
+                'selling_price',
                 'discount',
-                'discount_per',
+                'discount_per', 
                 'links'
             ],
         )
         self.df = self.df.rename_axis('ID')
+        self.category = category
+        self.pages = int(pages)
+        self.user_name = user_name
+        self.data = dict()
+        self.urls = list()
 
-    def url_linker(self, total_pages=5, *args):
-        urls = list()
-        for page in range(1, total_pages+1):
-            urls.append(self.url_builder(page, *args))
-        return urls
+    def url_linker(self, *args):
+        for page in range(0, self.pages):
+            self.urls.append(f'https://www.amazon.in/s?k={self.category}&page={page+1}&ref=nb_sb_noss')
 
-    def url_builder(self, page=1, *args):
-        parms = '+'.join(args)
-        url = f'https://www.amazon.in/s?k={parms}&page={page}&ref=nb_sb_noss'
-        return url
-
-    def scrapper(self, urls, category):
+    def scrapper(self, urls):
         names = list()
         SP = list()
         CP = list()
@@ -53,13 +52,12 @@ class Scrapper:
         brand_name = list()
         links = list()
         categories = list()
-        data = dict()
-
+        user_names = list()
         for url in urls:
-            print(url)
             response = requests.get(url, headers=context).content
             soup = BeautifulSoup(response, 'html.parser')
             all_blocks = soup.findAll('div', class_='s-asin')
+            all_blocks = all_blocks[:5]
             for product in all_blocks:
                 try:
                     name = product.find('h2').get_text()
@@ -80,7 +78,7 @@ class Scrapper:
                         'td', 'a-span12 a-color-price a-size-base priceBlockSavingsString').get_text().split()
                     disc = disc.split('₹')[1].replace(',', "")
                     disc_per = disc_per.lstrip('(').rstrip(')')[:2]
-
+                    
                     brand = dict()
                     lst = []
                     for i in new_soup.findAll('tr', 'a-spacing-small'):
@@ -94,7 +92,7 @@ class Scrapper:
                         continue
                     else:
                         brand_name.append(brand_)
-                    print(name)
+
                     names.append(name)
                     SP.append(selling_price)
                     CP.append(cost_price)
@@ -103,62 +101,46 @@ class Scrapper:
                     discount.append(disc)
                     discount_per.append(disc_per)
                     links.append(link)
-                    categories.append(category)
+                    categories.append(self.category)
+                    user_names.append(self.user_name)
+
                 except Exception as e:
-                    continue
+                    print(e)
 
-        data['names'] = names
-        data['selling_price'] = SP
-        data['cost_price'] = CP
-        data['rating'] = rating
-        data['total_rating'] = people
-        data['discount'] = discount
-        data['discount_per'] = discount_per
-        data['brands'] = brand_name
-        data['categories'] = categories
-        data['links'] = links
-        return data
+        self.data['user_name'] = user_names
+        self.data['brands'] = brand_name
+        self.data['categories'] = categories
+        self.data['names'] = names
+        self.data['rating'] = rating
+        self.data['total_rating'] = people
+        self.data['cost_price'] = CP
+        self.data['selling_price'] = SP
+        self.data['discount'] = discount
+        self.data['discount_per'] = discount_per
+        self.data['links'] = links
+        
 
-    def amazon_scraper(self, category, sex, pages=10):
-        urls = self.url_linker(pages, category, sex)
-        return self.scrapper(urls, category)
+    def convert_to_df(self):
+        df1 = pd.DataFrame(self.data)
+        self.df = pd.concat((self.df, df1))
 
-    def save_df_to_csv(self, name):
-        self.df.to_csv(name + '.csv')
+    def scrap(self):
+        self.url_linker(self.category)
+        self.scrapper(self.urls)
+        self.convert_to_df()
+        # self.save_to_csv()
+        self.df.discount_per = self.df.discount_per.map(lambda x: x.split('%')[0])
+        self.df['cost_price'] = self.df['cost_price'].map(lambda x: x.replace(',', ''))
+        self.df['selling_price'] = self.df['selling_price'].map(lambda x: x.replace(',', ''))
+        self.df['total_rating'] = self.df['total_rating'].map(lambda x: x.replace(',', ''))
+        my_df = self.df
+        return my_df
 
-
-if __name__ == '__main__':
-    scrapper = Scrapper()
-    categories = [
-        ('skin_cream', 'women'),
-    ]
-    all_data = []
-    for category, sex in categories:
-        data = scrapper.amazon_scraper(category, sex, 1)
-        all_data.append(data)
-        print(category)
-    print(len(all_data[0]['names']), len(all_data[0]['selling_price']), len(all_data[0]['cost_price']), len(
-        all_data[0]['total_rating']), len(all_data[0]['links']), len(all_data[0]['categories']), len(all_data[0]['brands']))
-
-    df = pd.DataFrame(
-        columns=[
-            'names',
-            'categories',
-            'selling_price',
-            'cost_price',
-            'rating',
-            'total_rating',
-            'discount',
-            'discount_per',
-            'links'
-        ],
-    )
-    df = df.rename_axis('ID')
-
-    for data in all_data:
-        df1 = pd.DataFrame(data)
-        df = pd.concat([df, df1], ignore_index=True)
-
-    df.to_csv('csv/1.csv')
+    def save_to_csv(self):
+        self.df.to_csv('csv/' + self.user_name + '.csv')
     
+if __name__ == '__main__':
+    scrapper = Scrapper('jay', 'skincream', 1)
+    scrapper.scrap()
+   
     

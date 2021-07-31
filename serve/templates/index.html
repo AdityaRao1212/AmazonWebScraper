@@ -7,6 +7,7 @@ Scrapper
 
 {% block css %}
 <link rel="stylesheet" href="{% static "master.css" %}">
+
 {% endblock %}
 
 {% block content %}
@@ -37,7 +38,7 @@ Scrapper
     </nav>
     <section id="categories">
 
-        <h1 class="H-primary">WebScraping for Beauty Products</h1>
+        {% comment %} <h1 class="H-primary">WebScraping for Beauty Products</h1>
         <p> The act or process of extracting data from a website.
         </p>
         <div class="box">
@@ -50,7 +51,27 @@ Scrapper
             </select>
         </div>
 
-        <button class="btn">Export</button>
+        <button class="btn">Export</button> {% endcomment %}
+
+        
+        
+        <h1>Web Scraping</h1>
+        <form action="{% url 'see-data' %}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="name">Name: </label>
+                <input required name='name' type="text" class="form-control" id="name" placeholder="Your Name">
+            </div>
+            <div class="form-group">
+                <label for="cat">Category:</label>
+                <input required name='cat' type="text" class="form-control" id="cat" placeholder="Category">
+            </div>
+            <div class="form-group">
+                <label for="pages">Pages</label>
+                <input required name='pages' type="number" id='pages' class="form-control" placeholder="5">
+            </div>
+            <button type="submit" class="btn btn-default">Submit</button>
+        </form>
 
     </section>
     <!-- <marquee behavior="scroll" direction="left" scrollamount="12">
