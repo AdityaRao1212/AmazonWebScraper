@@ -5,29 +5,27 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Hello {{ name }}</h1>
+    <h1>Hello {{ name }}!</h1>
+    <h3>This is your data.</h3>
+    <button><a href="{% url 'download_file' filename=csv_name %}">Download In CSV</a></button>
     <table>
         <tr>
             <th>S. NO.</th>
-            <th>Brands</th>
             <th>Names</th>
             <th>Rating</th>
             <th>Total Rating</th>
             <th>Cost Price (in &#x20B9;)</th>
             <th>Selling Price (in &#x20B9;)</th>
-            <th>Discount (in &#x20B9;)</th>
             <th>Links</th>
         </tr>
         {% for row in data %}
         <tr>
             <td>{{ row.id }}</td>
-            <td>{{ row.brands }}</td>
             <td>{{ row.names }}</td>
             <td>{{ row.rating }}</td>
             <td>{{ row.total_rating }}</td>
             <td>{{ row.cost_price }}</td>
             <td>{{ row.selling_price }}</td>
-            <td>{{ row.discount }}</td>
             <td><a href="{{ row.links }}">Link</a></td>
         </tr>
         {% endfor %}
