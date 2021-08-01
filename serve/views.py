@@ -1,6 +1,7 @@
 import pandas as pd
 import mimetypes
 import os
+import csv
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from .models import Scraped, FastScraped
@@ -34,9 +35,13 @@ def index(request):
                     links=df.iloc[i, 10]
                 )
             data = Scraped.objects.filter(user_name=name)
-            df = pd.DataFrame(data)
+            data_to_write = Scraped.objects.filter(user_name=name).values_list('brands', 'categories', 'names', 'rating', 'total_rating', 'cost_price', 'selling_price', 'discount', 'discount_per','links')
             csv_name = name + ".csv"
-            df.to_csv(BASE_DIR + '/csv/' + csv_name)
+            with open(BASE_DIR + '/csv/' + csv_name, 'w') as csvfile:
+                writer = csv.writer(csvfile)
+                writer.writerow(['brands', 'categories', 'names', 'rating', 'total_rating', 'cost_price', 'selling_price', 'discount', 'discount_per','links'])
+                for col in data_to_write:
+                    writer.writerow(col)
             return render(request, 'data.html', {'data': data, 'name':name, 'csv_name': csv_name})
 
         elif radio == 'fast':
@@ -57,9 +62,13 @@ def index(request):
                 except:
                     continue
             data = FastScraped.objects.filter(user_name=name)
-            df = pd.DataFrame(data)
+            data_to_write = FastScraped.objects.filter(user_name=name).values_list('categories', 'names', 'rating', 'total_rating', 'cost_price', 'selling_price', 'links')
             csv_name = name + ".csv"
-            df.to_csv(BASE_DIR + '/csv/' + csv_name)
+            with open(BASE_DIR + '/csv/' + csv_name, 'w') as csvfile:
+                writer = csv.writer(csvfile)
+                writer.writerow(['categories', 'names', 'rating', 'total_rating', 'cost_price', 'selling_price', 'links'])
+                for col in data_to_write:
+                    writer.writerow(col)
             return render(request, 'fast_data.html', {'data': data, 'name':name, 'csv_name': csv_name})
     return HttpResponseRedirect('/')
     # data = FastScraped.objects.all()

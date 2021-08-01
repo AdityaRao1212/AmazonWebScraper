@@ -58,10 +58,13 @@ class FastScrapper:
                         'span', class_='a-price-whole').get_text()
                     cost_price = product.findAll(
                         'span', class_='a-offscreen')[-1].get_text().split('₹')[1]
-                    rat = product.find(
-                        'span', class_='a-icon-alt').get_text().split()[0]
-                    peps = product.find(
+                    try:
+                        rat = product.find(
+                        'span', class_='a-icon-alt').get_text().split()[0] 
+                        peps = product.find(
                         'span', class_='a-size-base').get_text()
+                    except:
+                        continue
                     # Inside Link
                     link = 'https://www.amazon.in' + \
                         product.find('a', class_='a-link-normal').get('href')

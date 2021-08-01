@@ -1,11 +1,23 @@
 {% extends 'base.html' %}
+{% load  static %}
 
 {% block title %}
     Data
 {% endblock %}
 
+{% block css %}
+    <link rel="stylesheet" href="{% static "data.css" %}">
+{% endblock %}
+
 {% block content %}
-    <h1>Hello {{ name }}</h1>
+    <section>
+        <div id='title'>
+            <h1>Hello {{ name }}!</h1>
+            <h3>This is your data.</h3>
+            <a href="{% url 'download_file' filename=csv_name %}">I<button class="btn btn-primary">Download In CSV</button></a>
+        </div>
+    </section>
+    <section class="styled-table">
     <table>
         <tr>
             <th>S. NO.</th>
@@ -32,5 +44,6 @@
         </tr>
         {% endfor %}
     </table>
+    </section>
 {% endblock content %}
 
