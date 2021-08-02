@@ -21,24 +21,27 @@ def index(request):
             scrapper = Scrapper(name, cat, pages)
             df = scrapper.scrap()
             for i in range(len(df)):
-                Scraped.objects.create(
-                    user_name=name, 
-                    brands=df.iloc[i, 1] ,
-                    categories=df.iloc[i, 2],
-                    names=df.iloc[i, 3],
-                    rating=float(df.iloc[i, 4]),
-                    total_rating=int(df.iloc[i, 5]),
-                    cost_price=int(float(df.iloc[i, 6])),
-                    selling_price=int(float(df.iloc[i, 7])),
-                    discount=int(float(df.iloc[i, 8])),
-                    discount_per=int(df.iloc[i, 9]),
-                    links=df.iloc[i, 10]
-                )
+                try:
+                    Scraped.objects.create(
+                        user_name=name, 
+                        brands=df.iloc[i, 1] ,
+                        categories=df.iloc[i, 2],
+                        names=df.iloc[i, 3],
+                        rating=float(df.iloc[i, 4]),
+                        total_rating=int(df.iloc[i, 5]),
+                        cost_price=int(float(df.iloc[i, 6])),
+                        selling_price=int(float(df.iloc[i, 7])),
+                        discount=int(float(df.iloc[i, 8])),
+                        discount_per=int(df.iloc[i, 9]),
+                        links=df.iloc[i, 10]
+                    )
+                except:
+                    continue
             data = Scraped.objects.filter(user_name=name)
             data_to_write = Scraped.objects.filter(user_name=name).values_list('brands', 'categories', 'names', 'rating', 'total_rating', 'cost_price', 'selling_price', 'discount', 'discount_per','links')
             csv_name = name + ".csv"
-            with open(BASE_DIR + '/csv/' + csv_name, 'w') as csvfile:
-                writer = csv.writer(csvfile)
+            with open(BASE_DIR + '/csv/' + csv_name, 'w', newline='') as csvfile:
+                writer = csv.writer(csvfile, newline='')
                 writer.writerow(['brands', 'categories', 'names', 'rating', 'total_rating', 'cost_price', 'selling_price', 'discount', 'discount_per','links'])
                 for col in data_to_write:
                     writer.writerow(col)
@@ -64,7 +67,7 @@ def index(request):
             data = FastScraped.objects.filter(user_name=name)
             data_to_write = FastScraped.objects.filter(user_name=name).values_list('categories', 'names', 'rating', 'total_rating', 'cost_price', 'selling_price', 'links')
             csv_name = name + ".csv"
-            with open(BASE_DIR + '/csv/' + csv_name, 'w') as csvfile:
+            with open(BASE_DIR + '/csv/' + csv_name, 'w', newline='') as csvfile:
                 writer = csv.writer(csvfile)
                 writer.writerow(['categories', 'names', 'rating', 'total_rating', 'cost_price', 'selling_price', 'links'])
                 for col in data_to_write:

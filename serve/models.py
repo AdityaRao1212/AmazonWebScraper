@@ -6,7 +6,7 @@ class Scraped(models.Model):
     user_name = models.CharField(null=True, max_length=255)
     brands = models.CharField(max_length=255)
     categories = models.CharField(max_length=255)
-    names = models.CharField(max_length=1000)
+    names = models.CharField(max_length=1000, unique=True)
     rating = models.FloatField(default=0, validators=[MinValueValidator(0.0), MaxValueValidator(5.0)])
     total_rating = models.IntegerField(default=0)
     cost_price = models.IntegerField(default=0)
@@ -24,7 +24,7 @@ class Scraped(models.Model):
 class FastScraped(models.Model):
     user_name = models.CharField(null=True, max_length=255)
     categories = models.CharField(max_length=255)
-    names = models.CharField(max_length=1000)
+    names = models.CharField(max_length=1000, unique=True)
     rating = models.FloatField(default=0, validators=[MinValueValidator(0.0), MaxValueValidator(5.0)])
     total_rating = models.IntegerField(default=0)
     cost_price = models.IntegerField(default=0)

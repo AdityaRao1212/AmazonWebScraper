@@ -29,8 +29,8 @@ Scrapper
 				</label>
 				<input type="checkbox" name="" id="open">
 				<nav>
-					<a href="#">Home</a>
-					<a href="#">Contact</a>
+					<a href="{% url 'home' %}">Home</a>
+					{% comment %} <a href="">Contact</a> {% endcomment %}
 				</nav>
 			</div>
 		</div>
@@ -41,11 +41,11 @@ Scrapper
         <form action="{% url 'see-data' %}" method="post">
             {% csrf_token %}
             <div class="form-group">
-                <label for="name">Name: </label>
+                <label for="name">Name</label>
                 <input required name='name' type="text" class="form-control" id="name" placeholder="Your Name">
             </div>
             <div class="form-group">
-                <label for="cat">Category:</label>
+                <label for="cat">Category</label>
                 <input required name='cat' type="text" class="form-control" id="cat" placeholder="Category">
             </div>
             <div class="form-group">
@@ -53,10 +53,10 @@ Scrapper
                 <input required name='pages' type="number" id='pages' class="form-control" placeholder="5">
             </div>
             <div id='form-field'>
-                <label for="fast">Fast Scrap (Reduced Data): </label>
+                <label for="fast">Fast Scrap (Reduced Data) </label>
                 <input id="fast" type="radio" name="radio" value="fast" required="required">
                 <br>
-                <label for="slow">Slow Scrap (More Data): </label>
+                <label for="slow">Slow Scrap (More Data) </label>
                 <input id="slow" type="radio" name="radio" value="slow" required="required">
             </div>
             
