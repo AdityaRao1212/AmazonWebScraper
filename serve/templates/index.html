@@ -2,12 +2,11 @@
 {% load static %}
 
 {% block title %}
-Scrapper
+    Scrapper
 {% endblock %}
 
 {% block css %}
 <link rel="stylesheet" href="{% static "master.css" %}">
-
 {% endblock %}
 
 {% block content %}
@@ -22,6 +21,7 @@ Scrapper
     <div class="container">
 			<div class="header-left">
 				<h1>Amazon Scraper</h1>
+                
 			</div>
 			<div class="header-right">
 				<label for="open">
@@ -38,19 +38,20 @@ Scrapper
 
     <section id="categories">
       <div id='block'>
-        <form action="{% url 'see-data' %}" method="post">
+        <div id='inner-block'>
+            <form action="{% url 'see-data' %}" method="post">
             {% csrf_token %}
             <div class="form-group">
-                <label for="name">Name</label>
+                <label for="name">Enter Your Name</label>
                 <input required name='name' type="text" class="form-control" id="name" placeholder="Your Name">
             </div>
             <div class="form-group">
-                <label for="cat">Category</label>
+                <label for="cat">Enter The Category / Keywords</label>
                 <input required name='cat' type="text" class="form-control" id="cat" placeholder="Category">
             </div>
             <div class="form-group">
-                <label for="pages">Pages</label>
-                <input required name='pages' type="number" id='pages' class="form-control" placeholder="5">
+                <label for="pages">Enter Number Of Pages</label>
+                <input required name='pages' type="number" id='pages' class="form-control" value='1'>
             </div>
             <div id='form-field'>
                 <label for="fast">Fast Scrap (Reduced Data) </label>
@@ -59,12 +60,24 @@ Scrapper
                 <label for="slow">Slow Scrap (More Data) </label>
                 <input id="slow" type="radio" name="radio" value="slow" required="required">
             </div>
-            
-            <button type="submit" class="btn btn-default">Submit</button>
+            <button id='submit' type="submit" class="btn btn-danger">Submit</button>
+            <br>
+            <div class="spinner-border text-danger" role="status" style="visibility:hidden;">
+                <span class="sr-only">Loading...</span>
+            </div>
         </form>
+        </div>
       </div>
     </section>
-    <!-- <marquee behavior="scroll" direction="left" scrollamount="12">
-        <p> universal </p>
-    </marquee> -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+//            $('#submit').css('display','none');
+            $('#submit').click(function() {
+                
+                $('.spinner-border').css('visibility', 'visible');                
+            })
+        })
+    </script>
 {% endblock %}

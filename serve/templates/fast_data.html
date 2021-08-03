@@ -7,6 +7,7 @@
 
 {% block css %}
     <link rel="stylesheet" href="{% static "data.css" %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -14,32 +15,52 @@
         <div id='title'>
             <h1>Hello {{ name }}!</h1>
             <h3>This is your data.</h3>
-            <a href="{% url 'download_file' filename=csv_name %}">I<button class="btn btn-primary">Download In CSV</button></a>
+            <div class='checkbox'>
+                <a class='check btn btn-danger' href="{% url 'home' %}">Home</a>
+                <a class='check btn btn-danger' href="">Download In CSV</a> 
+                {% comment %} {% url 'download_file' filename=csv_name %} {% endcomment %}
+                <a class='check btn btn-danger' href="#">Visualize</a>
+            </div>
+
+        </div>
+        <div id='search'>
+            <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names..">
         </div>
     </section>
     <section class="styled-table">
-        <table>
-            <tr>
-                <th>S. NO.</th>
-                <th>Names</th>
-                <th>Rating</th>
-                <th>Total Rating</th>
-                <th>Cost Price (in &#x20B9;)</th>
-                <th>Selling Price (in &#x20B9;)</th>
-                <th>Links</th>
-            </tr>
-            {% for row in data %}
-            <tr>
-                <td>{{ row.id }}</td>
-                <td>{{ row.names }}</td>
-                <td>{{ row.rating }}</td>
-                <td>{{ row.total_rating }}</td>
-                <td>{{ row.cost_price }}</td>
-                <td>{{ row.selling_price }}</td>
-                <td><a href="{{ row.links }}">Link</a></td>
-            </tr>
-            {% endfor %}
+        <div id="grpChkBox">
+            <div class='checkbox' id='checkbox'>
+                <p class="check" id='check'><input type="checkbox" name="rat" /> Rating </p>
+                <p class="check" id='check'><input type="checkbox" name="totrat" /> Total Rating</p>
+                <p class="check" id='check'><input type="checkbox" name="cp" /> Cost Price (in &#x20B9;)</p>
+                <p class="check" id='check'><input type="checkbox" name="sp" /> Selling Price (in &#x20B9;)</p>
+                <p class="check" id='check'><input type="checkbox" name="lnks" /> Links</p>
+            </div>
+            <table id='myTable'>
+                <tr class='header'>
+                    <th>S. NO.</th>
+                    <th >Names</th>
+                    <th class='rat'>Rating</th>
+                    <th class='totrat'>Total Rating</th>
+                    <th class='cp'>Cost Price (in &#x20B9;)</th>
+                    <th class='sp'>Selling Price (in &#x20B9;)</th>
+                    <th class='lnks'>Links</th>
+                </tr>
+                {% for row in data %}
+                <tr>
+                    <td>{{ row.id }}</td>
+                    <td>{{ row.names }}</td>
+                    <td>{{ row.rating }}</td>
+                    <td>{{ row.total_rating }}</td>
+                    <td>{{ row.cost_price }}</td>
+                    <td>{{ row.selling_price }}</td>
+                    <td><a href="{{ row.links }}">Link</a></td>
+                </tr>
+                {% endfor %}
         </table>
+        </div>
     </section>
+    <script src="{% static 'serve/function.js' %}"></script>
+   
 {% endblock content %}
 

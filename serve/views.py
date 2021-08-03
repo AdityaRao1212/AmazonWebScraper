@@ -1,4 +1,3 @@
-import pandas as pd
 import mimetypes
 import os
 import csv
@@ -73,9 +72,9 @@ def index(request):
                 for col in data_to_write:
                     writer.writerow(col)
             return render(request, 'fast_data.html', {'data': data, 'name':name, 'csv_name': csv_name})
-    return HttpResponseRedirect('/')
-    # data = FastScraped.objects.all()
-    # return render(request, 'fast_data.html', {'data': data})
+    # return HttpResponseRedirect('/')
+    data = FastScraped.objects.all()
+    return render(request, 'fast_data.html', {'data': data})
 
 
 def base(request):
