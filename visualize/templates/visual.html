@@ -1,9 +1,10 @@
 {% extends 'base.html'%}
+{% load static %}
 
 {% block title %}Visualization{% endblock %}
-{% block css %}
-    <link rel="stylesheet" href="..\template\style.css">
-{% endblock %}
+{% comment %} {% block css %}
+    <link rel="stylesheet" href="{% static 'visualize/style.css' %}">
+{% endblock %} {% endcomment %}
 
 {% block content %}
     <nav class="navbar">
@@ -14,13 +15,33 @@
             <li><a href="#download"> Download</a></li>
         </ul>
     </nav>
+{% comment %} 
+    <form action="{% url 'api-getdata' %}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <input type="hidden" required name='name' type="text" id="name" value={{name}}>
+            </div>
+            <button type="submit">Submit</button>
+    </form> {% endcomment %}
+
 
     <canvas id="myCanvas" width="500" height="300" style="border:1px solid #000000" margin: auto ;>
     </canvas>
+<script src="{% static 'jquery.min.js' %}"></script>
 <script>
-    $(document).ready(function() {
-        
+    var endpoint = '{% url 'api-getdata' %}';
+    $.ajax({
+        type: 'POST',
+        url: endpoint,
+        data: { 'name' : '{{name}}'},
+        success: function(data){
+            console.log(data)
+            //console.log(data);
+        },
+        error: function(error_data){
+            console.log('Error')
+            console.log(error_data);
+        }
     })
-
 </script>
 {% endblock %}

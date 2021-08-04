@@ -17,9 +17,8 @@
             <h3>This is your data.</h3>
             <div class='checkbox'>
                 <a class='check btn btn-danger' href="{% url 'home' %}">Home</a>
-                <a class='check btn btn-danger' href="">Download In CSV</a> 
-                {% comment %} {% url 'download_file' filename=csv_name %} {% endcomment %}
-                <a class='check btn btn-danger' href="#">Visualize</a>
+                <a class='check btn btn-danger' href="{% url 'download_file' filename=csv_name %}">Download In CSV</a> 
+                <a class='check btn btn-danger' href="{% url 'visualize' name=name %}">Visualize</a>
             </div>
 
         </div>
