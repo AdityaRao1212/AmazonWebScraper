@@ -1,0 +1,26 @@
+{% extends 'base.html'%}
+
+{% block title %}Visualization{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="..\template\style.css">
+{% endblock %}
+
+{% block content %}
+    <nav class="navbar">
+        <ul class="nav-list">
+            <li><a href="#home"> Plot</a></li>
+            <li><a href="#selection"> Selection</a></li>
+            <li><a href="#dpi"> DPI</a></li>
+            <li><a href="#download"> Download</a></li>
+        </ul>
+    </nav>
+
+    <canvas id="myCanvas" width="500" height="300" style="border:1px solid #000000" margin: auto ;>
+    </canvas>
+<script>
+    $(document).ready(function() {
+        
+    })
+
+</script>
+{% endblock %}

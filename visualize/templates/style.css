@@ -1,0 +1,33 @@
+*{
+    margin:0;
+    padding:0;
+}
+body{
+    background-color: rgb(241, 177, 177);
+}
+.nav-list{
+    height: 33px;
+    display: flex;
+    background-color: rgb(245, 80, 113);
+    color:white;
+    background-color: rgb(245, 128, 151) (252, 152, 152);
+list-style: none;}
+
+.nav-list li a{
+    text-decoration: none;
+    color: white;
+    padding: 15px;
+    font-size: 24px;
+
+}
+.navbar{
+    text-decoration: none;
+}
+#myCanvas{
+width: 500;
+     height:400;
+    border:1px solid #000000;
+     
+    margin: 175px 50px 50px 150px;
+    /* background-color: rgb(240, 161, 177); */
+}
