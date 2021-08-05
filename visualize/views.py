@@ -34,9 +34,11 @@ class GetData(APIView):
         body_unicode = request.body.decode('utf-8')
         body = j.loads(body_unicode)
         name = body['name']
-        print(name)
+        rows = body['rows']
+        radio = body['radio']
+        to_asc = body['to_asc']
+        print(name, rows, radio, to_asc)
         csv_path = BASE_DIR + '/csv/' + name + '.csv'
         df = pd.read_csv(csv_path, encoding='cp1252')[:1]
         json_data = df.to_json()
-        json_data = json_data[:-1] + ", \"type\":\"bar\"" + json_data[-1]
         return Response(json_data)

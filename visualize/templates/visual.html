@@ -11,33 +11,70 @@
         <ul class="nav-list">
             <li><a href="#home"> Plot</a></li>
             <li><a href="#selection"> Selection</a></li>
-            <li><a href="#dpi"> DPI</a></li>
             <li><a href="#download"> Download</a></li>
         </ul>
     </nav>
-{% comment %} 
+    {% comment %} Select Box for type of plot {% endcomment %}
+    <select id='select-box'>
+	    <option value="bar">Bar Chart</option>
+	    <option value="line">Line Chart</option>
+	    <option value="pie">Pie Chart</option>
+	    <option value="radar">Radar chart</option>
+	    <option value="polarArea">Polar Chart</option>
+	    <option value="doughnut">Doughnut chart</option>
+	    <option value='horizontalBar'>Horizontal Bar Chart</option>
+  	</select>
+
+
+ 
     <form action="{% url 'api-getdata' %}" method="post">
             {% csrf_token %}
+            {% comment %} RadioButtons for columns {% endcomment %}
+            <div id='form-field'>
+                <label for="rating">Rating</label>
+                <input checked id="rating" value="rating" type="radio" name="radio" required="required">
+                <label for="totRat">Best Seller (Total Ratings)</label>
+                <input id="totRat" value="totRat" type="radio" name="radio" required="required">
+                <label for="cp">Cost Price</label>
+                <input id="cp" value="cp" type="radio" name="radio" required="required">
+                <label for="sp">Selling Price</label>
+                <input id="sp" value="sp" type="radio" name="radio" required="required">
+            </div>
+            <div class='form-group'>
+                <label for="asc">Sort Ascending</label>
+                <input checked id="asc" value="asc" type="radio" name="sort" required="required">
+                <label for="desc">Sort Descending</label>
+                <input id="desc" value="desc" type="radio" name="sort" required="required">
+            </div>
             <div class="form-group">
                 <input type="hidden" required name='name' type="text" id="name" value={{name}}>
             </div>
-            <button type="submit">Submit</button>
-    </form> {% endcomment %}
-
+            <div class="form-group">
+                <label for="row">Number of rows (max 20)</label>
+                <input required name='row' type="number" id='rows' class="form-control col-sm" value='10'>
+            </div>
+            
+    </form>
+    
+    <button onclick='checkRadio()'>Radio</button>
     <button onclick='postData()'>Click</button>
-
+    <button onclick='clearChart()'>Clear</button>
+    <button onclick='download()'>Download</button>
     <div class="container">
     <canvas id="myCanvas" class='col-sm' margin:30%;></canvas>
     </div>
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/blob-polyfill/5.0.20210201/Blob.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.js'></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 <script>
-    var endpoint = '{% url 'api-getdata' %}';
+    var endpoint = '{% url 'api-getdata' %}';    
 
-    function makeChart(ctype){
-        new Chart(document.getElementById('myCanvas'), {
-            type: ctype,
-            data: {
+    function makeChart(plotType){
+        var myChart = new Chart(document.getElementById('myCanvas'), {
+            type: plotType,
+            data: {     
                 labels: ['a', 'b', 'c', 'd'],
                 datasets: [
                     {
@@ -57,46 +94,73 @@
         });
     }
 
+function clearChart(){
+   location.reload(true);
+}
+
+function checkRadio(){
+    var rating = document.getElementById('rating');
+    var totRat = document.getElementById('totRat');
+    var cp = document.getElementById('cp');
+    var sp = document.getElementById('sp');
+    var radio = null;
+    var to_asc = null;
+    var asc = document.getElementById('asc');
+    var desc = document.getElementById('desc');
+
+    if(rating.checked == true)
+        radio = rating.value;
+    else if(totRat.checked == true)
+        radio = totRat.value;
+    else if(cp.checked == true)
+        radio = cp.value;
+    else if(sp.checked == true)
+        radio = sp.value;
+
+    if(asc.checked == true)
+        to_asc = true;
+    else if(desc.checked == true)
+        to_asc = false;
+    return [radio, to_asc];
+}
 
 function postData() {
+    var select = document.getElementById('select-box');
+    var typeOfPlot = select.options[select.selectedIndex].value;
+    var row = document.getElementById('rows').value;
+    [radio, to_asc] = checkRadio();    
+
+    if(row > 20){
+        alert('Enter value under 20. Number of columns reduced to 20.');
+        row = 20;
+    };
+
   const response = fetch(endpoint, {
     method: 'POST',
     headers: {
     'Content-Type': 'application/json',
   },
-    body: JSON.stringify({name: "{{name}}"}),
+    body: JSON.stringify({
+        name: "{{name}}",
+        rows:row,
+        radio: radio,
+        to_asc: to_asc,
+    }),
   }).then(function(response) {
         return response.json();
     })
     .then(function(data) {
-        console.log(data);
-    })
+        d = JSON.parse(data);
+        console.log(d);
+        makeChart(typeOfPlot);
+    });
+};
+
+function download(){
+    $('#myCanvas').get(0).toBlob(function(blob) {
+        saveAs(blob, 'chart1.png');
+    });
 }
 
-// postData(endpoint , { name: '{{name}}' });
-
-
-    {% comment %} function getCreateChart (){
-        fetch(endpoint, {
-            method: 'POST',
-            body:{'name': '{{name}}'},
-        }).then(response => console.log(response));
-    } {% endcomment %}
-
-{% comment %} 
-    $.ajax({
-        type: 'POST',
-        url: endpoint,
-        data: { 'name' : '{{name}}'},
-        success: function(data){
-            d = JSON.parse(data);
-            console.log(d);
-            makeChart(d.type);
-        },
-        error: function(error_data){
-            console.log('Error')
-            console.log(error_data);
-        }
-    })   {% endcomment %}
 </script>
 {% endblock %}
