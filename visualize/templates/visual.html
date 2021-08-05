@@ -7,24 +7,15 @@
 {% endblock %} {% endcomment %}
 
 {% block content %}
-    <nav class="navbar">
-        <ul class="nav-list">
-            <li><a href="#home"> Plot</a></li>
-            <li><a href="#selection"> Selection</a></li>
-            <li><a href="#download"> Download</a></li>
-        </ul>
-    </nav>
     {% comment %} Select Box for type of plot {% endcomment %}
     <select id='select-box'>
 	    <option value="bar">Bar Chart</option>
 	    <option value="line">Line Chart</option>
 	    <option value="pie">Pie Chart</option>
-	    <option value="radar">Radar chart</option>
 	    <option value="polarArea">Polar Chart</option>
 	    <option value="doughnut">Doughnut chart</option>
 	    <option value='horizontalBar'>Horizontal Bar Chart</option>
   	</select>
-
 
  
     <form action="{% url 'api-getdata' %}" method="post">
@@ -34,11 +25,11 @@
                 <label for="rating">Rating</label>
                 <input checked id="rating" value="rating" type="radio" name="radio" required="required">
                 <label for="totRat">Best Seller (Total Ratings)</label>
-                <input id="totRat" value="totRat" type="radio" name="radio" required="required">
+                <input id="totRat" value="total_rating" type="radio" name="radio" required="required">
                 <label for="cp">Cost Price</label>
-                <input id="cp" value="cp" type="radio" name="radio" required="required">
+                <input id="cp" value="cost_price" type="radio" name="radio" required="required">
                 <label for="sp">Selling Price</label>
-                <input id="sp" value="sp" type="radio" name="radio" required="required">
+                <input id="sp" value="selling_price" type="radio" name="radio" required="required">
             </div>
             <div class='form-group'>
                 <label for="asc">Sort Ascending</label>
@@ -56,7 +47,6 @@
             
     </form>
     
-    <button onclick='checkRadio()'>Radio</button>
     <button onclick='postData()'>Click</button>
     <button onclick='clearChart()'>Clear</button>
     <button onclick='download()'>Download</button>
@@ -70,17 +60,60 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 <script>
     var endpoint = '{% url 'api-getdata' %}';    
-
-    function makeChart(plotType){
+    
+    function makeChart(plotType, names, plotData, numOfRows, radio){
         var myChart = new Chart(document.getElementById('myCanvas'), {
             type: plotType,
             data: {     
-                labels: ['a', 'b', 'c', 'd'],
+                labels: names,
                 datasets: [
                     {
                         label: 'Population (millions)',
-                        backgroundColor: ["#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
-                        data: [30, 20, 30, 0]
+                        backgroundColor:  [
+                            'rgba(255, 99, 132, 0.5)',
+                            'rgba(255, 159, 64, 0.5)',
+                            'rgba(255, 205, 86, 0.5)',
+                            'rgba(75, 192, 192, 0.5)',
+                            'rgba(54, 162, 235, 0.5)',
+                            'rgba(153, 102, 255, 0.5)',
+                            'rgba(201, 203, 207, 0.5)',
+                            'rgba(255, 99, 132, 0.5)',
+                            'rgba(255, 159, 64, 0.5)',
+                            'rgba(255, 205, 86, 0.5)',
+                            'rgba(75, 192, 192, 0.5)',
+                            'rgba(54, 162, 235, 0.5)',
+                            'rgba(153, 102, 255, 0.5)',
+                            'rgba(201, 203, 207, 0.5)',
+                            'rgba(255, 99, 132, 0.5)',
+                            'rgba(255, 159, 64, 0.5)',
+                            'rgba(255, 205, 86, 0.5)',
+                            'rgba(75, 192, 192, 0.5)',
+                            'rgba(54, 162, 235, 0.5)',
+                            'rgba(153, 102, 255, 0.5)'
+                        ],
+                        borderColor: [
+                            'rgb(255, 99, 132)',
+                            'rgb(255, 159, 64)',
+                            'rgb(255, 205, 86)',
+                            'rgb(75, 192, 192)',
+                            'rgb(54, 162, 235)',
+                            'rgb(153, 102, 255)',
+                            'rgb(201, 203, 207)',
+                            'rgb(255, 99, 132)',
+                            'rgb(255, 159, 64)',
+                            'rgb(255, 205, 86)',
+                            'rgb(75, 192, 192)',
+                            'rgb(54, 162, 235)',
+                            'rgb(153, 102, 255)',
+                            'rgb(201, 203, 207)',
+                            'rgb(255, 99, 132)',
+                            'rgb(255, 159, 64)',
+                            'rgb(255, 205, 86)',
+                            'rgb(75, 192, 192)',
+                            'rgb(54, 162, 235)',
+                            'rgb(153, 102, 255)'
+                        ],
+                        data: plotData
                     }
                 ]
             },
@@ -88,7 +121,7 @@
                 legend: { display: false },
                 title: { 
                     display: true,
-                    text: 'Predicted world pop'
+                    text: 'Top '+numOfRows +' Products According To '+radio,
                 }
             }
         });
@@ -96,6 +129,12 @@
 
 function clearChart(){
    location.reload(true);
+}
+
+function download(){
+    $('#myCanvas').get(0).toBlob(function(blob) {
+        saveAs(blob, 'chart1.png');
+    });
 }
 
 function checkRadio(){
@@ -129,7 +168,6 @@ function postData() {
     var typeOfPlot = select.options[select.selectedIndex].value;
     var row = document.getElementById('rows').value;
     [radio, to_asc] = checkRadio();    
-
     if(row > 20){
         alert('Enter value under 20. Number of columns reduced to 20.');
         row = 20;
@@ -152,15 +190,12 @@ function postData() {
     .then(function(data) {
         d = JSON.parse(data);
         console.log(d);
-        makeChart(typeOfPlot);
+        var names = Object.values(d.names);
+        var plotData = Object.values(d[radio]);
+        makeChart(typeOfPlot, names, plotData, row, radio);
     });
 };
 
-function download(){
-    $('#myCanvas').get(0).toBlob(function(blob) {
-        saveAs(blob, 'chart1.png');
-    });
-}
 
 </script>
 {% endblock %}

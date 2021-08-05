@@ -34,11 +34,19 @@ class GetData(APIView):
         body_unicode = request.body.decode('utf-8')
         body = j.loads(body_unicode)
         name = body['name']
-        rows = body['rows']
+        rows = int(body['rows'])
         radio = body['radio']
         to_asc = body['to_asc']
-        print(name, rows, radio, to_asc)
         csv_path = BASE_DIR + '/csv/' + name + '.csv'
-        df = pd.read_csv(csv_path, encoding='cp1252')[:1]
+        df = pd.read_csv(csv_path, encoding='cp1252')
+        df = get_data(df, rows, radio, to_asc)
         json_data = df.to_json()
         return Response(json_data)
+
+def get_data(df, rows, col, is_asc):
+    df = df[['names', col]]
+    new_df = df.sort_values(col, ascending=is_asc)
+    new_df = new_df.iloc[:rows]
+    new_df.index = [i for i in range(rows)]
+    new_df['names'] = new_df['names'].map(lambda x:' '.join((x.split()[:5])))
+    return new_df
