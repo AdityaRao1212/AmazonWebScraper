@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualization</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
+</head>
+<body>
+    <div class="navbar">
+        <nav>
+    <!-- <nav class="navbar"> -->
+        <!-- <ul class="nav-list"> -->
+            <ul>
+            <li><a href="#plot"> Plot</a>
+            <ul class="MENU">
+                <li> <a href="#">LIME</a>  </li>
+                <li> <a href="#"> PIE CHARTS</a></li>
+                <li> <a href="#"> BAR GRAPH</a></li>
+                <li> <a href="#">SCATTER</a> </li>
+                <li> <a href="#"> DOUGHNUT CHART</a></li>
+            </ul></li>
+            <li><a href="#selection"> Selection</a>
+            <ul class="Menu1">
+                <li> <a href="#">option 1</a> </li>
+                <li> <a href="#">option 2</a></li>
+            </ul></li>
+            <li><a href="#dpi"> DPI</a></li>
+            <li><a href="#download"> Download</a></li>
+        </ul>
+    </nav>
+</div>
+    <canvas id="myCanvas" width="800" height="400"
+    style="border:1px solid #000000" margin: auto ;
+        >
+        
+    </canvas>
+    <button class="btn">Submit</button>
+<script>
+    var c = document.getElementById("myCanvas");
+    var ctx = c.getContext("2d");
+    ctx.fillStyle = "white";
+    ctx.fillRect( 0,0,800, 400);
+</script>
+
+</body>
+</html>

@@ -24,24 +24,79 @@
             <button type="submit">Submit</button>
     </form> {% endcomment %}
 
+    <button onclick='postData()'>Click</button>
 
-    <canvas id="myCanvas" width="500" height="300" style="border:1px solid #000000" margin: auto ;>
-    </canvas>
-<script src="{% static 'jquery.min.js' %}"></script>
+    <div class="container">
+    <canvas id="myCanvas" class='col-sm' margin:30%;></canvas>
+    </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 <script>
     var endpoint = '{% url 'api-getdata' %}';
+
+    function makeChart(ctype){
+        new Chart(document.getElementById('myCanvas'), {
+            type: ctype,
+            data: {
+                labels: ['a', 'b', 'c', 'd'],
+                datasets: [
+                    {
+                        label: 'Population (millions)',
+                        backgroundColor: ["#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+                        data: [30, 20, 30, 0]
+                    }
+                ]
+            },
+            options: {
+                legend: { display: false },
+                title: { 
+                    display: true,
+                    text: 'Predicted world pop'
+                }
+            }
+        });
+    }
+
+
+function postData() {
+  const response = fetch(endpoint, {
+    method: 'POST',
+    headers: {
+    'Content-Type': 'application/json',
+  },
+    body: JSON.stringify({name: "{{name}}"}),
+  }).then(function(response) {
+        return response.json();
+    })
+    .then(function(data) {
+        console.log(data);
+    })
+}
+
+// postData(endpoint , { name: '{{name}}' });
+
+
+    {% comment %} function getCreateChart (){
+        fetch(endpoint, {
+            method: 'POST',
+            body:{'name': '{{name}}'},
+        }).then(response => console.log(response));
+    } {% endcomment %}
+
+{% comment %} 
     $.ajax({
         type: 'POST',
         url: endpoint,
         data: { 'name' : '{{name}}'},
         success: function(data){
-            console.log(data)
-            //console.log(data);
+            d = JSON.parse(data);
+            console.log(d);
+            makeChart(d.type);
         },
         error: function(error_data){
             console.log('Error')
             console.log(error_data);
         }
-    })
+    })   {% endcomment %}
 </script>
 {% endblock %}

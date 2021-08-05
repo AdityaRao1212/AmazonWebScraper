@@ -6,6 +6,7 @@ from rest_framework.response import Response
 
 from serve.models import FastScraped
 
+import json as j
 import pandas as pd
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -29,9 +30,13 @@ class GetData(APIView):
         }
         return Response(data)
 
-    def post(self, request):
-        name = request.POST.get('name')
+    def post(self, request, format=None):
+        body_unicode = request.body.decode('utf-8')
+        body = j.loads(body_unicode)
+        name = body['name']
+        print(name)
         csv_path = BASE_DIR + '/csv/' + name + '.csv'
         df = pd.read_csv(csv_path, encoding='cp1252')[:1]
-        json = df.to_json()
-        return Response(json)
+        json_data = df.to_json()
+        json_data = json_data[:-1] + ", \"type\":\"bar\"" + json_data[-1]
+        return Response(json_data)
