@@ -1,33 +1,58 @@
 *{
-    margin:0;
-    padding:0;
+    margin: 0px;
+    padding: 0px;
+    font-family: 'Merienda', cursive;
 }
-body{
-    background-color: rgb(241, 177, 177);
+
+h1{
+    text-align: center;
+    color: #ff6262;
+    line-height: 1.5;
 }
-.nav-list{
-    height: 33px;
+
+#box{
+    background-color: #f1faee;
+}
+
+/* Divs */
+.button-container{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-group{
     display: flex;
-    background-color: rgb(245, 80, 113);
-    color:white;
-    background-color: rgb(245, 128, 151) (252, 152, 152);
-list-style: none;}
-
-.nav-list li a{
-    text-decoration: none;
-    color: white;
-    padding: 15px;
-    font-size: 24px;
-
+    justify-content: center;
+    align-items: center;
 }
-.navbar{
-    text-decoration: none;
+
+/* inputs */
+label{
+    margin: 0.5rem 1rem;
+    font-weight: bold;
 }
-#myCanvas{
-width: 500;
-     height:400;
-    border:1px solid #000000;
-     
-    margin: 175px 50px 50px 150px;
-    /* background-color: rgb(240, 161, 177); */
+
+#inner-radio{
+    padding: 10px;
+    font-weight: bold;
+}
+
+#radio-block{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Buttons */
+.clickable{
+    width: 150px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+canvas{
+    width: 100%;
+    padding: 50px;
+    background-color:#f1faee;
 }

@@ -2,56 +2,68 @@
 {% load static %}
 
 {% block title %}Visualization{% endblock %}
-{% comment %} {% block css %}
-    <link rel="stylesheet" href="{% static 'visualize/style.css' %}">
-{% endblock %} {% endcomment %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static "style.css" %}">
+{% endblock %}
 
 {% block content %}
-    {% comment %} Select Box for type of plot {% endcomment %}
-    <select id='select-box'>
-	    <option value="bar">Bar Chart</option>
-	    <option value="line">Line Chart</option>
-	    <option value="pie">Pie Chart</option>
-	    <option value="polarArea">Polar Chart</option>
-	    <option value="doughnut">Doughnut chart</option>
-	    <option value='horizontalBar'>Horizontal Bar Chart</option>
-  	</select>
+    <div id='box'>
+        <h1>Visualizer</h1>
+            {% comment %} Select Box for type of plot {% endcomment %}
+        <div class="form-group">
+            <label for="select-box">Type Of Chart </label>
+            <select id='select-box' class='btn btn-danger dropdown-toggle '>
+                <option value="bar">Bar Chart</option>
+                <option value="line">Line Chart</option>
+                <option value="pie">Pie Chart</option>
+                <option value="polarArea">Polar Chart</option>
+                <option value="doughnut">Doughnut chart</option>
+                <option value='horizontalBar'>Horizontal Bar Chart</option>
+            </select>
+            <label for="row">Number of rows (max 20)</label>
+            <input required name='row' type="number" id='rows' value='10'>
+        </div>
 
- 
-    <form action="{% url 'api-getdata' %}" method="post">
-            {% csrf_token %}
-            {% comment %} RadioButtons for columns {% endcomment %}
-            <div id='form-field'>
-                <label for="rating">Rating</label>
-                <input checked id="rating" value="rating" type="radio" name="radio" required="required">
-                <label for="totRat">Best Seller (Total Ratings)</label>
-                <input id="totRat" value="total_rating" type="radio" name="radio" required="required">
-                <label for="cp">Cost Price</label>
-                <input id="cp" value="cost_price" type="radio" name="radio" required="required">
-                <label for="sp">Selling Price</label>
-                <input id="sp" value="selling_price" type="radio" name="radio" required="required">
+        <div id='radio-block'>    
+            <div class='form-group'>
+                <label class='btn btn-danger'>Column: </label>
+                <div id='inner-radio' >
+                    <label for="rating">Rating</label>
+                    <input checked id="rating" value="rating" type="radio" name="radio" required="required">
+                    <label for="totRat">Best Seller (Total Ratings)</label>
+                    <input id="totRat" value="total_rating" type="radio" name="radio" required="required">
+                    <label for="cp">Cost Price</label>
+                    <input id="cp" value="cost_price" type="radio" name="radio" required="required">
+                    <label for="sp">Selling Price</label>
+                    <input id="sp" value="selling_price" type="radio" name="radio" required="required">
+                </div>
             </div>
             <div class='form-group'>
-                <label for="asc">Sort Ascending</label>
-                <input checked id="asc" value="asc" type="radio" name="sort" required="required">
-                <label for="desc">Sort Descending</label>
-                <input id="desc" value="desc" type="radio" name="sort" required="required">
+                <label class='btn btn-danger'>Column: </label>
+                <div id="inner-radio">
+                    <label for="asc">Ascending</label>
+                    <input checked id="asc" value="asc" type="radio" name="sort" required="required">
+                    <label for="desc">Descending</label>
+                    <input id="desc" value="desc" type="radio" name="sort" required="required">
+                </div>
             </div>
-            <div class="form-group">
-                <input type="hidden" required name='name' type="text" id="name" value={{name}}>
-            </div>
-            <div class="form-group">
-                <label for="row">Number of rows (max 20)</label>
-                <input required name='row' type="number" id='rows' class="form-control col-sm" value='10'>
-            </div>
-            
-    </form>
-    
-    <button onclick='postData()'>Click</button>
-    <button onclick='clearChart()'>Clear</button>
-    <button onclick='download()'>Download</button>
-    <div class="container">
-    <canvas id="myCanvas" class='col-sm' margin:30%;></canvas>
+        </div>
+
+        <div class="form-group">
+            <input type="hidden" required name='name' type="text" id="name" value={{name}}>
+        </div>
+        
+        
+        <div class='button-container'>
+            <button onclick='postData()' class="btn btn-danger clickable">Click</button>
+            <button onclick='clearChart()' class="btn btn-danger clickable">Clear</button>
+            <button onclick='download()' class="btn btn-danger clickable">Download</button>
+        </div>
+    </div>
+
+    <div class="box">
+    <canvas id="myCanvas" margin:10%;></canvas>
     </div>
 
 <script src='https://cdnjs.cloudflare.com/ajax/libs/blob-polyfill/5.0.20210201/Blob.js'></script>
@@ -68,7 +80,7 @@
                 labels: names,
                 datasets: [
                     {
-                        label: 'Population (millions)',
+                        label: radio,
                         backgroundColor:  [
                             'rgba(255, 99, 132, 0.5)',
                             'rgba(255, 159, 64, 0.5)',
@@ -118,10 +130,36 @@
                 ]
             },
             options: {
-                legend: { display: false },
+                legend: { display: true },
                 title: { 
                     display: true,
                     text: 'Top '+numOfRows +' Products According To '+radio,
+                    fontSize: 40
+                },
+                responsive: true,
+                scales: {
+                    xAxes: [ {
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Names',
+                        fontSize: 40
+                    },
+                    ticks: {
+                        major: {
+                        fontStyle: 'bold',
+                        fontColor: '#FFFFFF',
+                        }
+                    }
+                    } ],
+                    yAxes: [ {
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: radio,
+                        fontSize: 40
+                    }
+                    } ]
                 }
             }
         });
@@ -192,6 +230,7 @@ function postData() {
         console.log(d);
         var names = Object.values(d.names);
         var plotData = Object.values(d[radio]);
+        radio = radio.charAt(0).toUpperCase() + radio.substr(1).toLowerCase()
         makeChart(typeOfPlot, names, plotData, row, radio);
     });
 };
