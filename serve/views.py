@@ -54,7 +54,6 @@ def index(request):
             scrapper = FastScrapper(name, cat, pages)
             df = scrapper.scrap()
             for i in range(len(df)):
-                print(f"\n{i=}")
                 try:
                     FastScraped.objects.create(
                         user_name=name, 
