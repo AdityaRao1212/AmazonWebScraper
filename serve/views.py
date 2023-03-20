@@ -6,6 +6,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from .models import Scraped, FastScraped
 from .slow_scrap import Scrapper
 from .fast_scrap import FastScrapper
+from .debug_utils import debug
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -38,8 +39,11 @@ def index(request):
                     continue
             data = Scraped.objects.filter(user_name=name)
             data_to_write = Scraped.objects.filter(user_name=name).values_list('brands', 'categories', 'names', 'rating', 'total_rating', 'cost_price', 'selling_price', 'discount', 'discount_per','links')
-            csv_name = name + ".csv"
-            with open(BASE_DIR + '/csv/' + csv_name, 'w', newline='') as csvfile:
+            
+            csv_name = f"{name}.csv"
+            csv_file_path = f"{BASE_DIR}/csv/{csv_name}"
+
+            with open(csv_file_path, 'w', newline='') as csvfile:
                 writer = csv.writer(csvfile, newline='')
                 writer.writerow(['brands', 'categories', 'names', 'rating', 'total_rating', 'cost_price', 'selling_price', 'discount', 'discount_per','links'])
                 for col in data_to_write:
@@ -50,31 +54,40 @@ def index(request):
             scrapper = FastScrapper(name, cat, pages)
             df = scrapper.scrap()
             for i in range(len(df)):
+                print(f"\n{i=}")
                 try:
                     FastScraped.objects.create(
                         user_name=name, 
                         categories=df.iloc[i, 1] ,
                         names=df.iloc[i, 2],
                         rating=float(df.iloc[i, 3]),
-                        total_rating=int(df.iloc[i, 4]),
+                        total_rating=int(float(df.iloc[i, 4])),
                         cost_price=int(float(df.iloc[i, 5])),
                         selling_price=int(float(df.iloc[i, 6])),
                         links=df.iloc[i, 7]
                     )
-                except:
+                except Exception as e:
+                    #debug(type='e', message=e.__traceback__)
+                    #debug(type='w', message='Exception Occurred, while creating FastScrapped object.')
                     continue
-            data = FastScraped.objects.filter(user_name=name)
-            data_to_write = FastScraped.objects.filter(user_name=name).values_list('categories', 'names', 'rating', 'total_rating', 'cost_price', 'selling_price', 'links')
-            csv_name = name + ".csv"
-            with open(BASE_DIR + '/csv/' + csv_name, 'w', newline='') as csvfile:
+            data = FastScraped.objects.filter(user_name=name, categories=cat)
+            for key, row in enumerate(data.values(), start=1):
+                row['id'] = key
+            data_to_write = FastScraped.objects.filter(user_name=name, categories=cat).values_list('categories', 'names', 'rating', 'total_rating', 'cost_price', 'selling_price', 'links')
+
+            csv_name = f"{name}.csv"
+            csv_file_path = f"{BASE_DIR}/csv/{csv_name}"
+
+            with open(csv_file_path, 'w', newline='') as csvfile:
                 writer = csv.writer(csvfile)
                 writer.writerow(['categories', 'names', 'rating', 'total_rating', 'cost_price', 'selling_price', 'links'])
                 for col in data_to_write:
                     writer.writerow(col)
+            print()
             return render(request, 'fast_data.html', {'data': data, 'name':name, 'csv_name': csv_name})
     # return HttpResponseRedirect('/')
-    data = FastScraped.objects.all()
-    return render(request, 'fast_data.html', {'data': data})
+    #data = FastScraped.objects.all()
+    return render(request, 'fast_data.html', {'data': {}})
 
 
 def base(request):
