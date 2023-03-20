@@ -7,6 +7,9 @@ penv/
 # Databases
 *.sqlite3
 
+# Data CSV Files
+csv/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
