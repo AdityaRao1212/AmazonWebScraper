@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import pandas as pd
 import requests
+from .debug_utils import debug
 
 context = {
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
@@ -36,7 +37,8 @@ class FastScrapper:
 
     def url_linker(self, *args):
         for page in range(0, self.pages):
-            self.urls.append(f'https://www.amazon.in/s?k={self.category}&page={page+1}&ref=nb_sb_noss')
+            page_link = f'https://www.amazon.in/s?k={self.category}&page={page+1}&ref=nb_sb_noss'
+            self.urls.append(page_link)
 
     def scrapper(self, urls):
         names = list()
@@ -47,28 +49,55 @@ class FastScrapper:
         links = list()
         categories = list()
         user_names = list()
+        
         for url in urls:
             response = requests.get(url, headers=context).content
             soup = BeautifulSoup(response, 'html.parser')
-            all_blocks = soup.findAll('div', class_='s-asin')
+            # OPTIONS TRIED:
+            #  a-section
+            #  sg-col-inner
+            all_blocks = soup.findAll('div', class_="sg-col-inner")
+            #if len(all_blocks) == 0: 
+            #    debug(type='w', message="[WARNING] NO elements under this class found.")
+            #    #pass
             for product in all_blocks:
                 try:
-                    name = product.find('h2').get_text()
+                    name_obj = product.find('h2')
+                    if name_obj is None:
+                        #debug(type='e', message=f"OBJECT IS NONE!")
+                        #debug(type='e', message="[PRODUCT IS SKIPPED]\n")
+                        continue
+                    else:
+                        name = name_obj.get_text()
                     selling_price = product.find(
-                        'span', class_='a-price-whole').get_text()
+                                                 'span', 
+                                                 class_='a-price-whole'
+                                                ).get_text()
                     cost_price = product.findAll(
-                        'span', class_='a-offscreen')[-1].get_text().split('₹')[1]
+                                                    'span', 
+                                                    class_='a-offscreen'
+                                                )[-1].get_text().split('₹')[1]
+                    
                     try:
                         rat = product.find(
-                        'span', class_='a-icon-alt').get_text().split()[0] 
+                                            'span', 
+                                            class_='a-icon-alt'
+                                            ).get_text().split()[0] 
                         peps = product.find(
-                        'span', class_='a-size-base').get_text()
-                    except:
+                                            'span', 
+                                            class_='a-size-base'
+                                            ).get_text()
+                    except Exception as e:
+                        debug(type='w', message=e)
                         continue
+                        
                     # Inside Link
-                    link = 'https://www.amazon.in' + \
-                        product.find('a', class_='a-link-normal').get('href')
-                    
+                    extracted_href = product.find('a', class_='a-link-normal').get('href')
+                    link = str()
+                    if extracted_href.startswith('https:'):
+                        continue
+                    else:
+                        link = 'https://www.amazon.in' + extracted_href
                     names.append(name)
                     SP.append(selling_price)
                     CP.append(cost_price)
@@ -79,7 +108,7 @@ class FastScrapper:
                     user_names.append(self.user_name)
 
                 except Exception as e:
-                    print(e)
+                    debug(type='w', message=e)
 
         self.data['user_name'] = user_names
         self.data['categories'] = categories
