@@ -10,12 +10,12 @@
     text-align: center;
     color: white;
     background-color: #d4418e;
-    background-image: linear-gradient(315deg, #d4418e 0%, #0652c5 74%);
+    background-image: linear-gradient(315deg, #6a4570b0 0%, #0652c5 74%);
 }
 
 body{
-    background-color: #d4418e;
-    background-image: linear-gradient(315deg, #d4418e 50%, #0652c5 50%);
+    background-color: #4e1f56b0;
+    background-image: linear-gradient(315deg, #6a4570b0 50%, #0652c5 50%);
 }
 
 h1, h3{
@@ -35,11 +35,11 @@ a{
     font-family : sans-serif;
     min-width :  400px;
     box-shadow : 0 0 20px rgba(0, 0, 0, 0.15);
-    background: rgb(241, 192, 193);
+    background: #4e1f56b0;
 }
 
 .styled-table th{
-    background-color: rgb(240, 107, 109);;
+    background-color: #4e1f56b0;
     color: #ffffff;
     text-align: left;
 }
@@ -62,15 +62,15 @@ td{
     border-bottom: 1px solid #dddddd;
 }
 
-.styled-table tbody tr:nth-of-type(even) {
-    background-color: #f3f3f3;
+.styled-table tbody tr {
+    background-color: #f0e7f2b0;
 }
 
 #search{
     padding: 0 22.25%;
     padding-top: 20px;
-    background-color: #d4418e;
-    background-image: linear-gradient(315deg, #d4418e 0%, #0652c5 74%);
+    background-color: #4e1f56b0;
+    background-image: linear-gradient(315deg, #4e1f56b0 0%, #0652c5 74%);
 }
 
 #myInput{
@@ -108,5 +108,5 @@ a{
 
 #checkbox{
     padding-top: 15px;
-    /* background-color:rgb(255, 128, 130); */
+    background-color: #fff;
 }

@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block css %}
-<link rel="stylesheet" href="{% static "master.css" %}">
+<link rel="stylesheet" href="{% static "master.css" %}>
 {% endblock %}
 
 {% block content %}
@@ -41,15 +41,15 @@
         <div id='inner-block'>
             <form action="{% url 'see-data' %}" method="post">
             {% csrf_token %}
-            <div class="form-group text_field">
+            <div class="form-group">
                 <label for="name">Enter Your Name</label>
                 <input required name='name' type="text" class="form-control" id="name" placeholder="Your Name">
             </div>
-            <div class="form-group text_field">
+            <div class="form-group">
                 <label for="cat">Enter The Category / Keywords</label>
                 <input required name='cat' type="text" class="form-control" id="cat" placeholder="Category">
             </div>
-            <div class="form-group text_field">
+            <div class="form-group">
                 <label for="pages">Enter Number Of Pages</label>
                 <input required name='pages' type="number" id='pages' class="form-control" value='1'>
             </div>
@@ -60,8 +60,7 @@
                 <label for="slow">Slow Scrap (More Data) </label>
                 <input id="slow" type="radio" name="radio" value="slow" required="required">
             </div>
-            <!-- <button id='submit' type="submit" class="btn btn-primary">Submit</button> -->
-            <a id='submit' type="submit" class="btn btn-primary neon_button">Submit</a>
+            <button id='submit' type="submit" class="btn btn-primary">Submit</button>
             <br>
             <div class="spinner-border text-primary" role="status" style="visibility:hidden;">
                 <span class="sr-only">Loading...</span>

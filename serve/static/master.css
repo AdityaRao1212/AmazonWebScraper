@@ -162,13 +162,6 @@
       box-shadow: inset 0 2px 0 rgba(0,0,0,.8);
   }
   
-
-
-
-
-
-
-
   /* Portrait tablet to landscape and desktop */
   @media (min-width: 768px) and (max-width: 979px) {
       .box{
@@ -334,7 +327,7 @@
     padding-left: 20%;
     padding-right: 20%;
     border-radius: 20px;
-    background: #092e53;
+    background: #4e1f56b0;
     /* background: linear-gradient(180deg, rgba(210,146,147,1) 0%, rgba(239,219,218,1) 67%, rgba(239,219,218,0.3168864958092612) 82%); */
     opacity: 0.9;
 }
@@ -352,40 +345,4 @@
 
 #submit{
     font-size: 1.5rem;
-}
-
-
-.text_field input{
-    position: relative; 
-    display: inline-block; 
-    padding: 0px 30px; 
-    color: #2196f3; 
-    text-decoration: none; 
-    overflow: hidden;
-    transition: 0.2s;
-}
-.text_field input:hover , #categories a:hover{
-    /* color: #255784; */
-    color: #fff;
-    /* background: #2196F3; */
-    box-shadow: 0 0 10px #2196f3, 0 0 40px #2196f3, 0 0 80px #2196f3;
-    transition-delay: 1;
-}
-.text_field input::placeholder{
-    color: #2196f3;
-}
-.text_field input:focus{
-    color: #2196f3;
-}
-#categories a{
-    position: relative; 
-    display: inline-block; 
-    padding: 0px 30px; 
-    color: #fff !important; 
-    /* width: 100%; */
-    text-decoration: none; 
-    font-size: 23px !important;
-    text-transform: uppercase; 
-    overflow: hidden;
-    transition: 0.2s;
 }
