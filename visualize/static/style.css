@@ -1,13 +1,15 @@
 *{
     margin: 0px;
     padding: 0px;
-    font-family: 'Merienda', cursive;
+    /* font-family: "Segoe UI","Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"; */
+    font-family: 'Quicksand', sans-serif;
 }
 
 h1{
     text-align: center;
-    color: #4e1f56b0;
     line-height: 1.5;
+    color: #475dc0;
+    font-weight: bold;
 }
 
 #box{

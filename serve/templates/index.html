@@ -7,6 +7,9 @@
 
 {% block css %}
 <link rel="stylesheet" href="{% static "master.css" %}>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@100&family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -19,7 +22,9 @@
     </nav> {% endcomment %}
     <header class="clearfix">
     <div class="container">
-			<div class="header-left">
+
+        <div class="header_box">
+            <div class="header-left">
 				<h1>Amazon Scraper</h1>
                 
 			</div>
@@ -33,6 +38,8 @@
 					{% comment %} <a href="">Contact</a> {% endcomment %}
 				</nav>
 			</div>
+        </div>
+	
 		</div>
 	</header>
 

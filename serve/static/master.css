@@ -1,10 +1,11 @@
 *{
-    font-family: 'Merienda', cursive;
+    /* font-family: "Segoe UI","Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"; */
     margin: 0;
       padding: 0;
       outline: none;
       border: none;
       -webkit-box-sizing: border-box;
+        font-family: 'Quicksand', sans-serif;
   }
 
   *:before,
@@ -20,6 +21,9 @@
   }
   body{
       background: url('brushed_alu.png');
+      /* background-color: #4e1f56b0; */
+      background-color: #d4418e;
+      background-image: linear-gradient(315deg, #6a4570b0 0%, #0652c5 74%);
   }
   .clearfix:before,
   .clearfix:after {
@@ -91,6 +95,10 @@
       line-height: 40px;
       padding-top: 10px;
       margin-top: 0px;
+      color:#fff;
+      text-align: center;
+      width: 100%;
+      font-weight: bold;
   }
   a{
       text-decoration: none;
@@ -334,10 +342,10 @@
 
 #form-field * {
     vertical-align: middle;
-  }
+}
 #form-field input {
     clear:left;
-  }
+}
 #form-field label { 
     width:400px;
     display:inline-block;
@@ -345,4 +353,9 @@
 
 #submit{
     font-size: 1.5rem;
+}
+
+.inner-block input{
+    font-size: 18px;
+    font-weight: bold;
 }
