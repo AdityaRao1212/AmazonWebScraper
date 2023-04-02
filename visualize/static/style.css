@@ -10,6 +10,7 @@ h1{
     line-height: 1.5;
     color: #475dc0;
     font-weight: bold;
+    font-size: 30px;
 }
 
 #box{
@@ -33,6 +34,7 @@ h1{
 label{
     margin: 0.5rem 1rem;
     font-weight: bold;
+    font-size: 20px;
 }
 
 #inner-radio{
@@ -57,4 +59,19 @@ canvas{
     width: 100%;
     padding: 50px;
     background-color:#f1faee;
+}
+
+.form-group #select-box , .label_button , .button-container button{
+    color:#fff;
+    font-size: 20px !important;
+    font-weight: bold !important;
+    background-color: #4e1f56b0 !important;
+    border: 1px solid #4e1f56b0 !important; 
+}
+.label_button:hover , .button-container button:hover{
+    color: #0652c5;
+}
+input[type=number]{
+    font-size: 15px !important;
+    font-weight: bold !important;
 }

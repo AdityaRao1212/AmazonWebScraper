@@ -16,7 +16,7 @@
             {% comment %} Select Box for type of plot {% endcomment %}
         <div class="form-group">
             <label for="select-box">Type Of Chart </label>
-            <select id='select-box' class='btn btn-primary dropdown-toggle '>
+            <select id='select-box' class='btn dropdown-toggle '>
                 <option value="bar">Bar Chart</option>
                 <option value="line">Line Chart</option>
                 <option value="pie">Pie Chart</option>
@@ -30,7 +30,7 @@
 
         <div id='radio-block'>    
             <div class='form-group'>
-                <label class='btn btn-primary'>Column: </label>
+                <label class='btn label_button'>Column: </label>
                 <div id='inner-radio' >
                     <label for="rating">Rating</label>
                     <input checked id="rating" value="rating" type="radio" name="radio" required="required">
@@ -43,7 +43,7 @@
                 </div>
             </div>
             <div class='form-group'>
-                <label class='btn btn-primary'>Column: </label>
+                <label class='btn label_button'>Column: </label>
                 <div id="inner-radio">
                     <label for="asc">Ascending</label>
                     <input checked id="asc" value="asc" type="radio" name="sort" required="required">
@@ -59,9 +59,9 @@
         
         
         <div class='button-container'>
-            <button onclick='postData()' class="btn btn-primary clickable">Show</button>
-            <button onclick='clearChart()' class="btn btn-primary clickable">Clear</button>
-            <button onclick='download()' class="btn btn-primary clickable">Download</button>
+            <button onclick='postData()' class="btn clickable">Show</button>
+            <button onclick='clearChart()' class="btn  clickable">Clear</button>
+            <button onclick='download()' class="btn clickable">Download</button>
         </div>
     </div>
 

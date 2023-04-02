@@ -75,9 +75,10 @@ td{
 }
 
 #myInput{
-    font-size: 1rem;
+    font-size: 18px;
     width: 100%;
     color: black;
+    padding: 8px;
 }
 
 
@@ -94,6 +95,16 @@ td{
     padding-right: 40px;
 }
 
+.checkbox a{
+    color:#fff;
+    font-size: 20px !important;
+    font-weight: bold !important;
+    background-color: #4e1f56b0 !important;
+    border: 1px solid #4e1f56b0 !important; 
+}
+.checkbox a:hover{
+    border: 1px solid #4e1f56b0 !important;
+}
 a{
     margin-left: 20px;
     margin-right: 20px;

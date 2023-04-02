@@ -324,13 +324,20 @@
 }
 
 #categories label {
-    font-size: 2.25rem;
+    font-size: 30px;
     background-color: #fff;
     font-weight: bold;
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
 }
-
+#categories input[type=text]{
+    font-size: 15px !important;
+    font-weight: bold !important;
+}
+#categories input[type=number]{
+    font-size: 15px !important;
+    font-weight: bold !important;
+}
 #block{
     padding-left: 20%;
     padding-right: 20%;
@@ -350,12 +357,10 @@
     width:400px;
     display:inline-block;
 }
-
 #submit{
-    font-size: 1.5rem;
+    color:#fff;
+    font-size: 20px !important;
+    font-weight: bold !important;
+    background-color: #0652c5 !important;
 }
 
-.inner-block input{
-    font-size: 18px;
-    font-weight: bold;
-}
